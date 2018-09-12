@@ -20,14 +20,16 @@ while(True): #work till ban :(
 
     result1 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=amount, price=ws.recent_trades()[0]['price'] - 1, execInst='ParticipateDoNotInitiate').result()
     while(True): #check if order succesful else try again
-        if(result1['ordStatus'] == 'New'):
+        if(result1[0]['ordStatus'] == 'New'):
+            print('order LONG uspesen')
             break
         else:
             result1 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=amount, price=ws.recent_trades()[0]['price'] - 1, execInst='ParticipateDoNotInitiate').result()
 
     result2 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-amount, price=ws.recent_trades()[0]['price'] + 1, execInst='ParticipateDoNotInitiate').result()
     while (True):
-        if (result2['ordStatus'] == 'New'):
+        if (result2[0]['ordStatus'] == 'New'):
+            print('order SHORT uspesen')
             break
         else:
             result2 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-amount, price=ws.recent_trades()[0]['price'] + 1, execInst='ParticipateDoNotInitiate').result()
@@ -57,31 +59,38 @@ while(True): #work till ban :(
 
             result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['execQty'], price=cena, execInst='ParticipateDoNotInitiate').result()
             while(True): #new order for closing loop
-                if(result3['ordStatus'] == 'New'):
+                if(result3[0]['ordStatus'] == 'New'):
+                    print('order 3 uspesen')
                     break
                 else:
                     cena -= 1
                     result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['execQty'], price=cena, execInst='ParticipateDoNotInitiate').result()
-
+            break
 
         elif(position['openOrderSellQty'] == 0):
             cena = position['avgEntryPrice'] - 1
 
             result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=position['execQty'], price=cena, execInst='ParticipateDoNotInitiate').result()
+            #position['execQty'] is size of position so you know how much you have to close
             while (True):
-                if(result3['ordStatus'] == 'New'):
+                if(result3[0]['ordStatus'] == 'New'):
+                    print('order 3 uspesen')
                     break
                 else:
                     cena -= 1
                     result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=position['execQty'], price=cena, execInst='ParticipateDoNotInitiate').result()
+            break
 
         else:
             time.sleep(5)
+            print('wait 5 secs, orders not filled yet')
 
     while(True):
         for i in client.Position.Position_get().result()[0]:
             if (i['symbol'] == symbol):
                 position = i
+        print('to tle je prsl')
+        break
 
 
 
