@@ -45,7 +45,7 @@ while(True): #work till ban :(
 
     randID3 = ''.join(random.choice(string.ascii_lowercase) for i in range(15))  # for 3rd order
     while(True): #check if any orders filled completelly
-            for i in client.Position.Position_get().result()[0]:
+        for i in client.Position.Position_get().result()[0]:
             if(i['symbol'] == symbol):
                 position = i
 
