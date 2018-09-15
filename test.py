@@ -99,5 +99,4 @@ break
 #result3 = client.Order.Order_closePosition(symbol='XBTUSD', price=ws.recent_trades()[0]['price'] + 5).result()
 #print(result3)
 
-result = client.Position.Position_get().result()[0][2]
-print(result)
+deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()

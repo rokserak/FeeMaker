@@ -21,6 +21,9 @@ while(True): #work till ban :(
     offsetLong = 0.00000001
     offsetShort = 0.00000001
 
+    deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result() #dead man switch start
+    switchCounter = 0
+
     result1 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=amount, price=ws.recent_trades()[0]['price'] - offsetLong, execInst='ParticipateDoNotInitiate').result()
     while(True): #check if order succesful else try again
         if(result1[0]['ordStatus'] == 'New'):
@@ -81,6 +84,12 @@ while(True): #work till ban :(
         else:
             time.sleep(2)
             print('wait 2 secs, orders not filled yet')
+            if( switchCounter > 7):
+                deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
+                switchCounter = 0
+            else:
+                switchCounter += 1
+
 
 
     while(True):
@@ -97,3 +106,8 @@ while(True): #work till ban :(
         else:
             print('order still open, wait 5 secs')
             time.sleep(5)
+            if (switchCounter > 3):
+                deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
+                switchCounter = 0
+            else:
+                switchCounter += 1
