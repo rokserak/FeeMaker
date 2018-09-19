@@ -57,7 +57,7 @@ while(True): #work till ban :(
             r = client.Order.Order_cancelAll().result()
 
 
-            result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=position['currentQty'], price=ws.recent_trades()[0]['price'] + offsetClose, execInst='ParticipateDoNotInitiate').result()
+            result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] + offsetClose, execInst='ParticipateDoNotInitiate').result()
             while(True):
                 if(result3[0]['ordStatus'] == 'New'):
                     print('close position set')
@@ -71,7 +71,7 @@ while(True): #work till ban :(
                         if (position['currentQty'] != 0):
                             offsetClose = 0
 
-                            if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 5):
+                            if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 3):
 
                                 r = client.Order.Order_cancelAll().result()
 
@@ -104,7 +104,7 @@ while(True): #work till ban :(
                     break
 
 
-                    break
+
                 else:
                     time.sleep(1)
                     offsetClose += 0.5
@@ -121,22 +121,22 @@ while(True): #work till ban :(
             while (True):
                 if (result3[0]['ordStatus'] == 'New'):
                     print('close position set')
-                    while(True):
+                    while(True):#
 
-                        for i in client.Position.Position_get().result()[0]:
+                        for i in client.Position.Position_get().result()[0]: #
                             if (i['symbol'] == symbol):
                                 position = i
                                 break
                         if(position['currentQty'] != 0):
                             offsetClose = 0
 
-                            if(abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 5):
+                            if(abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 3):
 
                                 r = client.Order.Order_cancelAll().result()
 
                                 result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] - offsetClose, execInst='ParticipateDoNotInitiate').result()
 
-                                while (True):
+                                while (True): #
                                     if (result3[0]['ordStatus'] == 'New'):
                                         print('close position set again')
                                         break
