@@ -1,7 +1,7 @@
 import bitmex
 from bitmex_websocket import BitMEXWebsocket
 
-ws = BitMEXWebsocket(endpoint="https://testnet.bitmex.com/api/v1", symbol="XRPU18", api_key="oTBcvuJzFbqkuhHprfJlngUx", api_secret="nDsBbd5A12peVIqjgmiT46ealYn0aCcw6ziiOTHI8cLpftXs")
+ws = BitMEXWebsocket(endpoint="https://testnet.bitmex.com/api/v1", symbol="XBTUSD", api_key="oTBcvuJzFbqkuhHprfJlngUx", api_secret="nDsBbd5A12peVIqjgmiT46ealYn0aCcw6ziiOTHI8cLpftXs")
 
 
 client = bitmex.bitmex(test=True, api_key="QvaIe_JS9125RjXvG4UutfKt", api_secret="YrpvIbPahQK8euaBAZUR9JKqUGhQ6x_1FldDktFhdBN5amiy")
@@ -101,5 +101,10 @@ break
 
 #deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
 
-for b in client.Position.Position_get().result()[0]:
-    print(b)
+#for b in client.Position.Position_get().result()[0]:
+    #print(b)
+
+
+r = client.Order.Order_new(symbol='XBTUSD', ordType='Limit', orderQty=1000, price=ws.recent_trades()[0]['price'] - 7, stopPx=ws.recent_trades()[0]['price'] + 10, execInst='ParticipateDoNotInitiate,LastPrice').result()
+
+print(r)
