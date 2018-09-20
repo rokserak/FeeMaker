@@ -54,7 +54,7 @@ while(True): #work till ban :(
                 break
 
         if(position['openOrderBuyQty'] == 0 and position['openOrderSellQty'] > 0 and position['currentQty'] != 0): #LONG position
-            r = client.Order.Order_cancelAll().result()
+            r = client.Order.Order_cancelAll(symbol=symbol).result()
 
 
             result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] + offsetClose, execInst='ParticipateDoNotInitiate').result()
@@ -73,7 +73,7 @@ while(True): #work till ban :(
 
                             if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 3):
 
-                                r = client.Order.Order_cancelAll().result()
+                                r = client.Order.Order_cancelAll(symbol=symbol).result()
 
                                 result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] + offsetClose, execInst='ParticipateDoNotInitiate').result()
 
@@ -114,7 +114,7 @@ while(True): #work till ban :(
 
 
         elif(position['openOrderSellQty'] == 0 and position['openOrderBuyQty'] > 0 and position['currentQty'] != 0): #SHORT position
-            r = client.Order.Order_cancelAll().result()
+            r = client.Order.Order_cancelAll(symbol=symbol).result()
 
 
             result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] - offsetClose, execInst='ParticipateDoNotInitiate').result()
@@ -132,7 +132,7 @@ while(True): #work till ban :(
 
                             if(abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 3):
 
-                                r = client.Order.Order_cancelAll().result()
+                                r = client.Order.Order_cancelAll(symbol=symbol).result()
 
                                 result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] - offsetClose, execInst='ParticipateDoNotInitiate').result()
 
@@ -172,6 +172,9 @@ while(True): #work till ban :(
             break
 
         elif(position['openOrderSellQty'] == 0 and position['openOrderBuyQty'] == 0 and position['currentQty'] == 0): #sam c se oba orderja naenkt zafilata CELA
+            r = client.Order.Order_cancelAll(symbol=symbol).result()
+            deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
+            print('all filled too fast :)')
             break
 
         else:
@@ -182,27 +185,3 @@ while(True): #work till ban :(
                 switchCounter = 0
             else:
                 switchCounter += 1
-
-
-    '''
-    while(True):
-        for i in client.Position.Position_get().result()[0]:
-            if (i['symbol'] == symbol):
-                position = i
-                break
-
-        if(position['isOpen'] == False):
-
-            r = client.Order.Order_cancelAll(symbol=symbol).result()
-            print('all orders cancelled, new loop started')
-            time.sleep(10)
-            break
-        else:
-            print('order still open, wait 5 secs')
-            time.sleep(5)
-            if (switchCounter > 3):
-                deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
-                switchCounter = 0
-            else:
-                switchCounter += 1
-    '''
