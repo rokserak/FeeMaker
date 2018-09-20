@@ -13,7 +13,7 @@ while(True): #work till ban :(
     priceShort = currentPrice + 1
     priceLong = currentPrice - 1
     #amount = math.floor(ws.funds()['amount'] * 100000000 * currentPrice) #floor to round number
-    amount = 100
+    amount = 10000
 
     randID1 = ''.join(random.choice(string.ascii_lowercase) for i in range(15)) #make random string for checking open orders
     randID2 = ''.join(random.choice(string.ascii_lowercase) for i in range(15))
@@ -53,7 +53,7 @@ while(True): #work till ban :(
                 position = i
                 break
 
-        if(position['openOrderBuyQty'] == 0 and position['openOrderSellQty'] > 0 and position['currentQty'] != 0):
+        if(position['openOrderBuyQty'] == 0 and position['openOrderSellQty'] > 0 and position['currentQty'] != 0): #LONG position
             r = client.Order.Order_cancelAll().result()
 
 
@@ -62,7 +62,7 @@ while(True): #work till ban :(
                 if(result3[0]['ordStatus'] == 'New'):
                     print('close position set')
 
-                    while (True):
+                    while (True): #sell orderja postavla cim blizi live cene
 
                         for i in client.Position.Position_get().result()[0]:
                             if (i['symbol'] == symbol):
@@ -113,7 +113,7 @@ while(True): #work till ban :(
             break
 
 
-        elif(position['openOrderSellQty'] == 0 and position['openOrderBuyQty'] > 0 and position['currentQty'] != 0):
+        elif(position['openOrderSellQty'] == 0 and position['openOrderBuyQty'] > 0 and position['currentQty'] != 0): #SHORT position
             r = client.Order.Order_cancelAll().result()
 
 
@@ -169,6 +169,9 @@ while(True): #work till ban :(
                     offsetClose += 0.5
                     result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=position['currentQty'], price=ws.recent_trades()[0]['price'] + offsetShort, execInst='ParticipateDoNotInitiate').result()
                     print('retry close')
+            break
+
+        elif(position['openOrderSellQty'] == 0 and position['openOrderBuyQty'] == 0 and position['currentQty'] == 0): #sam c se oba orderja naenkt zafilata CELA
             break
 
         else:
