@@ -1,5 +1,7 @@
 import bitmex
 from bitmex_websocket import BitMEXWebsocket
+from datetime import datetime
+import dateutil.parser
 
 ws = BitMEXWebsocket(endpoint="https://testnet.bitmex.com/api/v1", symbol="XBTUSD", api_key="oTBcvuJzFbqkuhHprfJlngUx", api_secret="nDsBbd5A12peVIqjgmiT46ealYn0aCcw6ziiOTHI8cLpftXs")
 
@@ -105,6 +107,30 @@ break
     #print(b)
 
 
-r = client.Order.Order_new(symbol='XBTUSD', ordType='Limit', orderQty=1000, price=ws.recent_trades()[0]['price'] - 7, stopPx=ws.recent_trades()[0]['price'] + 10, execInst='ParticipateDoNotInitiate,LastPrice').result()
+#r = client.Funding.Funding_get(symbol='XBTUSD', reverse=True).result()
 
-print(r)
+#print(r[0][0]['timestamp'])
+
+
+#print(datetime.strptime(ws.get_instrument()['fundingTimestamp'][11:18], '%H:%M:%S'))
+
+print(datetime.now().time())
+
+print(ws.get_instrument()['volume']) #nvm kuk cajta reku bi 1h
+print(ws.get_instrument()['volume24h']) #obvios
+print(ws.get_instrument())
+print(ws.get_instrument()['fundingRate']) #trenutn funding
+print(ws.get_instrument()['indicativeFundingRate']) #nasledn funding
+print(ws.get_instrument()['fundingTimestamp']) #kdaj funding pride
+
+
+d = dateutil.parser.parse(ws.get_instrument()['fundingTimestamp']) # to use
+d = d.replace(tzinfo=None)
+razlika = d - datetime.utcnow()
+print(razlika.seconds / 60)  #tole j kuk j se du fundinga cajta
+#ti da kuk minut j se tko d lohka prevers
+
+
+
+#dodaj to d prever za cajt d ne trajda ku se funding bliza
+#dodaj to de prever c j pump al pa dumb biu pa nej ne trajda
