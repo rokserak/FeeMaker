@@ -34,7 +34,7 @@ while(True): #work till ban :(
         print(razlika.seconds / 60)
         if(razlika.seconds / 60 > 5):
 
-            cena = ws.recent_trades()[0]['price']
+            cena = ws.get_instrument()['lastPrice']
             result1 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=amount, price=cena - offsetLong, execInst='ParticipateDoNotInitiate').result()
             while(True): #check if order succesful else try again
                 if(result1[0]['ordStatus'] == 'New'):
@@ -43,11 +43,11 @@ while(True): #work till ban :(
                 else:
                     time.sleep(1)
                     offsetLong = 0.5
-                    cena = ws.recent_trades()[0]['price']
+                    cena = ws.get_instrument()['lastPrice']
                     result1 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=amount, price=cena - offsetLong, execInst='ParticipateDoNotInitiate').result()
                     print('LONG retry')
 
-            cena = ws.recent_trades()[0]['price']
+            cena = ws.get_instrument()['lastPrice']
             result2 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-amount, price=cena + offsetShort, execInst='ParticipateDoNotInitiate').result()
             while (True):
                 if (result2[0]['ordStatus'] == 'New'):
@@ -56,7 +56,7 @@ while(True): #work till ban :(
                 else:
                     time.sleep(1)
                     offsetShort = 0.5
-                    cena = ws.recent_trades()[0]['price']
+                    cena = ws.get_instrument()['lastPrice']
                     result2 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-amount, price=cena + offsetShort, execInst='ParticipateDoNotInitiate').result()
                     print('SHORT retry')
 
@@ -72,7 +72,7 @@ while(True): #work till ban :(
                 if(position['openOrderBuyQty'] == 0 and position['openOrderSellQty'] > 0 and position['currentQty'] != 0): #LONG position
                     r = client.Order.Order_cancelAll(symbol=symbol).result()
 
-                    cena = ws.recent_trades()[0]['price']
+                    cena = ws.get_instrument()['lastPrice']
                     result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=cena + offsetClose, execInst='ParticipateDoNotInitiate').result()
                     while(True):
                         if(result3[0]['ordStatus'] == 'New'):
@@ -86,12 +86,12 @@ while(True): #work till ban :(
                                         break
                                 if (position['currentQty'] != 0):
                                     offsetClose = 0
-                                    cena = ws.recent_trades()[0]['price']
+                                    cena = ws.get_instrument()['lastPrice']
                                     if (abs(cena - result3[0]['price']) > 2):
 
                                         r = client.Order.Order_cancelAll(symbol=symbol).result()
 
-                                        cena = ws.recent_trades()[0]['price']
+                                        cena = ws.get_instrument()['lastPrice']
                                         result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=cena + offsetClose, execInst='ParticipateDoNotInitiate').result()
 
                                         while (True):
@@ -101,7 +101,7 @@ while(True): #work till ban :(
                                             else:
                                                 time.sleep(1)
                                                 offsetClose = 0.5
-                                                cena = ws.recent_trades()[0]['price']
+                                                cena = ws.get_instrument()['lastPrice']
                                                 result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=cena + offsetClose, execInst='ParticipateDoNotInitiate').result()
                                                 print('retry close')
                                     else:
@@ -126,7 +126,7 @@ while(True): #work till ban :(
                         else:
                             time.sleep(1)
                             offsetClose = 0.5
-                            cena = ws.recent_trades()[0]['price']
+                            cena = ws.get_instrument()['lastPrice']
                             result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=cena + offsetClose, execInst='ParticipateDoNotInitiate').result()
                             print('retry close')
                     break
@@ -135,7 +135,7 @@ while(True): #work till ban :(
                 elif(position['openOrderSellQty'] == 0 and position['openOrderBuyQty'] > 0 and position['currentQty'] != 0): #SHORT position
                     r = client.Order.Order_cancelAll(symbol=symbol).result()
 
-                    cena = ws.recent_trades()[0]['price']
+                    cena = ws.get_instrument()['lastPrice']
                     result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=cena - offsetClose, execInst='ParticipateDoNotInitiate').result()
                     while (True):
                         if (result3[0]['ordStatus'] == 'New'):
@@ -149,12 +149,12 @@ while(True): #work till ban :(
                                 if(position['currentQty'] != 0):
                                     offsetClose = 0
 
-                                    cena = ws.recent_trades()[0]['price']
+                                    cena = ws.get_instrument()['lastPrice']
                                     if(abs(cena - result3[0]['price']) > 2):
 
                                         r = client.Order.Order_cancelAll(symbol=symbol).result()
 
-                                        cena = ws.recent_trades()[0]['price']
+                                        cena = ws.get_instrument()['lastPrice']
                                         result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=cena - offsetClose, execInst='ParticipateDoNotInitiate').result()
 
                                         while (True): #
@@ -164,7 +164,7 @@ while(True): #work till ban :(
                                             else:
                                                 time.sleep(1)
                                                 offsetClose = 0.5
-                                                cena = ws.recent_trades()[0]['price']
+                                                cena = ws.get_instrument()['lastPrice']
                                                 result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=cena - offsetClose, execInst='ParticipateDoNotInitiate').result()
                                                 print('retry close')
                                     else:
@@ -187,8 +187,8 @@ while(True): #work till ban :(
                         else:
                             time.sleep(1)
                             offsetClose = 0.5
-                            cena = ws.recent_trades()[0]['price']
-                            result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=cena + offsetShort, execInst='ParticipateDoNotInitiate').result()
+                            cena = ws.get_instrument()['lastPrice']
+                            result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=cena - offsetShort, execInst='ParticipateDoNotInitiate').result()
                             print('retry close')
                     break
 

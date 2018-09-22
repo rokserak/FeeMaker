@@ -122,6 +122,9 @@ print(ws.get_instrument())
 print(ws.get_instrument()['fundingRate']) #trenutn funding
 print(ws.get_instrument()['indicativeFundingRate']) #nasledn funding
 print(ws.get_instrument()['fundingTimestamp']) #kdaj funding pride
+print(ws.get_instrument()['lastPrice'])
+print(ws.get_instrument()['bidPrice'])
+print(ws.get_instrument()['askPrice'])
 
 
 d = dateutil.parser.parse(ws.get_instrument()['fundingTimestamp']) # to use
