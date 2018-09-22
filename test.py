@@ -127,9 +127,17 @@ print(ws.get_instrument()['fundingTimestamp']) #kdaj funding pride
 d = dateutil.parser.parse(ws.get_instrument()['fundingTimestamp']) # to use
 d = d.replace(tzinfo=None)
 razlika = d - datetime.utcnow()
-print(razlika.seconds / 60)  #tole j kuk j se du fundinga cajta
+print(razlika.seconds / 60)
+if(razlika.seconds / 60 > 5):
+    print(True)
+else:
+    print(False)
+
+#tole j kuk j se du fundinga cajta
 #ti da kuk minut j se tko d lohka prevers
 
+
+#print(ws.recent_trades()[0]['price'])
 
 
 #dodaj to d prever za cajt d ne trajda ku se funding bliza
