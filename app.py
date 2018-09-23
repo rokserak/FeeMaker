@@ -42,8 +42,8 @@ while(True): #work till ban :(
                     break
                 else:
                     time.sleep(1)
-                    offsetLong = 0.5
-                    cena = ws.get_instrument()['lastPrice']
+                    offsetLong += 0.5
+
                     result1 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=amount, price=cena - offsetLong, execInst='ParticipateDoNotInitiate').result()
                     print('LONG retry')
 
@@ -55,8 +55,8 @@ while(True): #work till ban :(
                     break
                 else:
                     time.sleep(1)
-                    offsetShort = 0.5
-                    cena = ws.get_instrument()['lastPrice']
+                    offsetShort += 0.5
+
                     result2 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-amount, price=cena + offsetShort, execInst='ParticipateDoNotInitiate').result()
                     print('SHORT retry')
 
@@ -64,7 +64,8 @@ while(True): #work till ban :(
 
             #randID3 = ''.join(random.choice(string.ascii_lowercase) for i in range(15))  # for 3rd order
             while(True): #check if any orders filled completelly
-                for i in client.Position.Position_get().result()[0]:
+                pos = client.Position.Position_get().result()[0]
+                for i in pos:
                     if(i['symbol'] == symbol):
                         position = i
                         break
@@ -79,8 +80,8 @@ while(True): #work till ban :(
                             print('close position set')
 
                             while (True): #sell orderja postavla cim blizi live cene
-
-                                for i in client.Position.Position_get().result()[0]:
+                                pos = client.Position.Position_get().result()[0]
+                                for i in pos:
                                     if (i['symbol'] == symbol):
                                         position = i
                                         break
@@ -100,8 +101,8 @@ while(True): #work till ban :(
                                                 break
                                             else:
                                                 time.sleep(1)
-                                                offsetClose = 0.5
-                                                cena = ws.get_instrument()['lastPrice']
+                                                offsetClose += 0.5
+
                                                 result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=cena + offsetClose, execInst='ParticipateDoNotInitiate').result()
                                                 print('retry close')
                                     else:
@@ -125,8 +126,8 @@ while(True): #work till ban :(
 
                         else:
                             time.sleep(1)
-                            offsetClose = 0.5
-                            cena = ws.get_instrument()['lastPrice']
+                            offsetClose += 0.5
+
                             result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=cena + offsetClose, execInst='ParticipateDoNotInitiate').result()
                             print('retry close')
                     break
@@ -141,8 +142,8 @@ while(True): #work till ban :(
                         if (result3[0]['ordStatus'] == 'New'):
                             print('close position set')
                             while(True):#
-
-                                for i in client.Position.Position_get().result()[0]: #
+                                pos = client.Position.Position_get().result()[0]
+                                for i in pos: #
                                     if (i['symbol'] == symbol):
                                         position = i
                                         break
@@ -163,8 +164,8 @@ while(True): #work till ban :(
                                                 break
                                             else:
                                                 time.sleep(1)
-                                                offsetClose = 0.5
-                                                cena = ws.get_instrument()['lastPrice']
+                                                offsetClose += 0.5
+
                                                 result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=cena - offsetClose, execInst='ParticipateDoNotInitiate').result()
                                                 print('retry close')
                                     else:
@@ -186,8 +187,8 @@ while(True): #work till ban :(
 
                         else:
                             time.sleep(1)
-                            offsetClose = 0.5
-                            cena = ws.get_instrument()['lastPrice']
+                            offsetClose += 0.5
+
                             result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=cena - offsetShort, execInst='ParticipateDoNotInitiate').result()
                             print('retry close')
                     break
