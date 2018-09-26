@@ -116,25 +116,26 @@ break
 
 print(datetime.now().time())
 
-print(ws.get_instrument()['volume']) #nvm kuk cajta reku bi 1h
-print(ws.get_instrument()['volume24h']) #obvios
-print(ws.get_instrument())
+#p#rint(ws.get_instrument()['volume']) #nvm kuk cajta reku bi 1h
+#print(ws.get_instrument()['volume24h']) #obvios
+#print(ws.get_instrument())
 #print(ws.get_instrument()['fundingRate']) #trenutn funding
 #print(ws.get_instrument()['indicativeFundingRate']) #nasledn funding
 #print(ws.get_instrument()['fundingTimestamp']) #kdaj funding pride
-print(ws.get_instrument()['lastPrice'])
-print(ws.get_instrument()['bidPrice'])
-print(ws.get_instrument()['askPrice'])
+#print(ws.get_instrument()['lastPrice'])
+#print(ws.get_instrument()['bidPrice'])
+#print(ws.get_instrument()['askPrice'])
 
 
-#d = dateutil.parser.parse(ws.get_instrument()['fundingTimestamp']) # to use
-#d = d.replace(tzinfo=None)
-#razlika = d - datetime.utcnow()
-#print(razlika.seconds / 60)
-#if(razlika.seconds / 60 > 5):
-    #print(True)
-#else:
-    #print(False)
+d = dateutil.parser.parse(ws.get_instrument()['fundingTimestamp']) # to use
+d = d.replace(tzinfo=None)
+razlika = d - datetime.utcnow()
+print(razlika.seconds / 60)
+
+if(razlika.seconds / 60 > 5):
+    print(True)
+else:
+    print(False)
 
 #tole j kuk j se du fundinga cajta
 #ti da kuk minut j se tko d lohka prevers
@@ -145,3 +146,4 @@ print(ws.get_instrument()['askPrice'])
 
 #dodaj to d prever za cajt d ne trajda ku se funding bliza
 #dodaj to de prever c j pump al pa dumb biu pa nej ne trajda
+

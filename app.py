@@ -10,6 +10,8 @@ client = bitmex.bitmex(test=True, api_key="QvaIe_JS9125RjXvG4UutfKt", api_secret
 ws = BitMEXWebsocket(endpoint="wss://testnet.bitmex.com/realtime", symbol="XBTUSD", api_key="oTBcvuJzFbqkuhHprfJlngUx", api_secret="nDsBbd5A12peVIqjgmiT46ealYn0aCcw6ziiOTHI8cLpftXs")
 symbol = 'XBTUSD'
 
+lastRenew = datetime.now()
+
 while(True): #work till ban :(
     #currentPrice = ws.recent_trades()[0]['price'] #live price
     #priceShort = currentPrice + 1
@@ -25,6 +27,12 @@ while(True): #work till ban :(
 
     deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result() #dead man switch start
     switchCounter = 0
+
+    kukCajta = datetime.now() - lastRenew
+
+    if(kukCajta.seconds / 3600 > 1):
+        ws = BitMEXWebsocket(endpoint="wss://testnet.bitmex.com/realtime", symbol="XBTUSD", api_key="oTBcvuJzFbqkuhHprfJlngUx", api_secret="nDsBbd5A12peVIqjgmiT46ealYn0aCcw6ziiOTHI8cLpftXs")
+        lastRenew = datetime.now()
 
     if(ws.get_instrument()['volume'] < ws.get_instrument()['volume24h'] / 24):
 
