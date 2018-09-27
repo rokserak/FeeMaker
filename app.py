@@ -31,6 +31,7 @@ while(True): #work till ban :(
     kukCajta = datetime.now() - lastRenew
 
     if(kukCajta.seconds / 3600 > 1):
+        a = ws.exit()
         ws = BitMEXWebsocket(endpoint="wss://testnet.bitmex.com/realtime", symbol="XBTUSD", api_key="oTBcvuJzFbqkuhHprfJlngUx", api_secret="nDsBbd5A12peVIqjgmiT46ealYn0aCcw6ziiOTHI8cLpftXs")
         lastRenew = datetime.now()
 

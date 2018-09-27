@@ -137,6 +137,9 @@ if(razlika.seconds / 60 > 5):
 else:
     print(False)
 
+
+
+
 #tole j kuk j se du fundinga cajta
 #ti da kuk minut j se tko d lohka prevers
 
