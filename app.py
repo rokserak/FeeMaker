@@ -110,7 +110,7 @@ while(True): #work till ban :(
                                     else:
                                         print('order set still viable')
                                         time.sleep(3)
-                                        if (switchCounter > 5):
+                                        if (switchCounter > 3):
                                             deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
                                             switchCounter = 0
                                         else:
@@ -169,7 +169,7 @@ while(True): #work till ban :(
                                     else:
                                         print('order set still viable')
                                         time.sleep(3)
-                                        if (switchCounter > 5):
+                                        if (switchCounter > 3):
                                             deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
                                             switchCounter = 0
                                         else:
@@ -199,7 +199,7 @@ while(True): #work till ban :(
                 else:
                     time.sleep(2)
                     print('wait 2 secs, orders not filled yet')
-                    if (switchCounter > 7):
+                    if (switchCounter > 6):
                         deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
                         switchCounter = 0
                     else:
