@@ -31,7 +31,7 @@ while(True): #work till ban :(
     kukCajta = datetime.now() - lastRenew
 
     if(kukCajta.seconds / 3600 > 1):
-        a = ws.exit()
+        ws.exit()
         ws = BitMEXWebsocket(endpoint="wss://testnet.bitmex.com/realtime", symbol="XBTUSD", api_key="oTBcvuJzFbqkuhHprfJlngUx", api_secret="nDsBbd5A12peVIqjgmiT46ealYn0aCcw6ziiOTHI8cLpftXs")
         lastRenew = datetime.now()
 
@@ -132,8 +132,7 @@ while(True): #work till ban :(
                     break
 
 
-                elif (position['openOrderSellQty'] == 0 and position['openOrderBuyQty'] > 0 and position[
-                    'currentQty'] != 0):  # SHORT position
+                elif (position['openOrderSellQty'] == 0 and position['openOrderBuyQty'] > 0 and position['currentQty'] != 0):  # SHORT position
                     r = client.Order.Order_cancelAll(symbol=symbol).result()
 
                     result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] - offsetClose, execInst='ParticipateDoNotInitiate').result()
@@ -184,7 +183,7 @@ while(True): #work till ban :(
                         else:
                             time.sleep(1)
                             offsetClose += 0.5
-                            result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] + offsetShort, execInst='ParticipateDoNotInitiate').result()
+                            result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] - offsetClose, execInst='ParticipateDoNotInitiate').result()
                             print('retry close')
                     break
 
