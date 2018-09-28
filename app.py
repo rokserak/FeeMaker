@@ -100,6 +100,7 @@ while(True): #work till ban :(
                                         while (True):
                                             if (result3[0]['ordStatus'] == 'New'):
                                                 print('close position set again')
+                                                time.sleep(5)
                                                 break
                                             else:
                                                 time.sleep(1)
@@ -158,6 +159,7 @@ while(True): #work till ban :(
                                         while (True):  #
                                             if (result3[0]['ordStatus'] == 'New'):
                                                 print('close position set again')
+                                                time.sleep(5)
                                                 break
                                             else:
                                                 time.sleep(1)
