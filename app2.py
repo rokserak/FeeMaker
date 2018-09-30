@@ -9,9 +9,9 @@ ws = BitMEXWebsocket(endpoint="https://testnet.bitmex.com/api/v1", symbol="ADAU1
 symbol = 'ADAU18'
 
 while(True): #work till ban :(
-    currentPrice = ws.recent_trades()[0]['price'] #live price
-    priceShort = currentPrice + 1
-    priceLong = currentPrice - 1
+    #currentPrice = ws.recent_trades()[0]['price'] #live price
+    #priceShort = currentPrice + 1
+    #priceLong = currentPrice - 1
     #amount = math.floor(ws.funds()['amount'] * 100000000 * currentPrice) #floor to round number
     amount = 100
 
