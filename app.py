@@ -206,6 +206,10 @@ while(True): #work till ban :(
                     else:
                         switchCounter += 1
 
+        else:
+            print('funding incoming')
+            time.sleep(300)
+
     else: # to j d ne trajda c je prevelk VOLUME(pump/dump)
         print('too much volume wait 30 secs')
         time.sleep(30)
