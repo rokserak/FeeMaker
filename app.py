@@ -49,7 +49,7 @@ while(True): #work till ban :(
                     print('order LONG uspesen')
                     break
                 else:
-                    time.sleep(1)
+                    time.sleep(1.5)
                     offsetLong += 0.5
                     result1 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=amount, price=ws.recent_trades()[0]['price'] - offsetLong, execInst='ParticipateDoNotInitiate').result()
                     print('LONG retry')
@@ -60,7 +60,7 @@ while(True): #work till ban :(
                     print('order SHORT uspesen')
                     break
                 else:
-                    time.sleep(1)
+                    time.sleep(1.5)
                     offsetShort += 0.5
                     result2 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-amount, price=ws.recent_trades()[0]['price'] + offsetShort, execInst='ParticipateDoNotInitiate').result()
                     print('SHORT retry')
@@ -103,7 +103,7 @@ while(True): #work till ban :(
                                                 time.sleep(5)
                                                 break
                                             else:
-                                                time.sleep(1)
+                                                time.sleep(1.5)
                                                 offsetClose += 0.5
                                                 result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] + offsetClose, execInst='ParticipateDoNotInitiate').result()
                                                 print('retry close')
@@ -127,7 +127,7 @@ while(True): #work till ban :(
 
 
                         else:
-                            time.sleep(1)
+                            time.sleep(1.5)
                             offsetClose += 0.5
                             result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] + offsetClose, execInst='ParticipateDoNotInitiate').result()
                             print('retry close')
@@ -162,7 +162,7 @@ while(True): #work till ban :(
                                                 time.sleep(5)
                                                 break
                                             else:
-                                                time.sleep(1)
+                                                time.sleep(1.5)
                                                 offsetClose += 0.5
                                                 result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] - offsetClose, execInst='ParticipateDoNotInitiate').result()
                                                 print('retry close')
@@ -184,7 +184,7 @@ while(True): #work till ban :(
                             break
 
                         else:
-                            time.sleep(1)
+                            time.sleep(1.5)
                             offsetClose += 0.5
                             result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] - offsetClose, execInst='ParticipateDoNotInitiate').result()
                             print('retry close')
