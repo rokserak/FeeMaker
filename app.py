@@ -118,6 +118,11 @@ while(True): #work till ban :(
                                                 offsetClose += 0.5
                                                 result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] + offsetClose, execInst='ParticipateDoNotInitiate').result()
                                                 print('retry close')
+                                                if (switchCounter > 5):
+                                                    deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
+                                                    switchCounter = 0
+                                                else:
+                                                    switchCounter += 1
                                     else:
                                         print('order set still viable')
                                         time.sleep(3)
@@ -142,6 +147,11 @@ while(True): #work till ban :(
                             offsetClose += 0.5
                             result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] + offsetClose, execInst='ParticipateDoNotInitiate').result()
                             print('retry close')
+                            if (switchCounter > 5):
+                                deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
+                                switchCounter = 0
+                            else:
+                                switchCounter += 1
                     break
 
 
@@ -177,6 +187,11 @@ while(True): #work till ban :(
                                                 offsetClose += 0.5
                                                 result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] - offsetClose, execInst='ParticipateDoNotInitiate').result()
                                                 print('retry close')
+                                                if (switchCounter > 5):
+                                                    deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
+                                                    switchCounter = 0
+                                                else:
+                                                    switchCounter += 1
                                     else:
                                         print('order set still viable')
                                         time.sleep(3)
@@ -199,6 +214,11 @@ while(True): #work till ban :(
                             offsetClose += 0.5
                             result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] - offsetClose, execInst='ParticipateDoNotInitiate').result()
                             print('retry close')
+                            if (switchCounter > 5):
+                                deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
+                                switchCounter = 0
+                            else:
+                                switchCounter += 1
                     break
 
                 elif (position['openOrderSellQty'] == 0 and position['openOrderBuyQty'] == 0):  # sam c se oba orderja naenkt zafilata CELA
