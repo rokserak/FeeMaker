@@ -30,18 +30,18 @@ while(True): #work till ban :(
 
     kukCajta = datetime.now() - lastRenew
 
-    if(kukCajta.seconds / 3600 > 1):
+    if(kukCajta.seconds / 3600 > 1): #renew ws connection cause live feed lagging, renew every hour
         ws.exit()
         ws = BitMEXWebsocket(endpoint="wss://testnet.bitmex.com/realtime", symbol="XBTUSD", api_key="oTBcvuJzFbqkuhHprfJlngUx", api_secret="nDsBbd5A12peVIqjgmiT46ealYn0aCcw6ziiOTHI8cLpftXs")
         lastRenew = datetime.now()
 
-    if(ws.get_instrument()['volume'] < ws.get_instrument()['volume24h'] / 24):
+    if(ws.get_instrument()['volume'] < ws.get_instrument()['volume24h'] / 24): #avoid pumps/dumps
 
-        d = dateutil.parser.parse(ws.get_instrument()['fundingTimestamp'])  # to use
+        d = dateutil.parser.parse(ws.get_instrument()['fundingTimestamp'])
         d = d.replace(tzinfo=None)
         razlika = d - datetime.utcnow()
         print(razlika.seconds / 60)
-        if(razlika.seconds / 60 > 5):
+        if(razlika.seconds / 60 > 5): #check funding closing
 
             result1 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=amount, price=ws.recent_trades()[0]['price'] - offsetLong, execInst='ParticipateDoNotInitiate').result()
             while (True):  # check if order succesful else try again
@@ -53,6 +53,11 @@ while(True): #work till ban :(
                     offsetLong += 0.5
                     result1 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=amount, price=ws.recent_trades()[0]['price'] - offsetLong, execInst='ParticipateDoNotInitiate').result()
                     print('LONG retry')
+                    if (switchCounter > 5):
+                        deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
+                        switchCounter = 0
+                    else:
+                        switchCounter += 1
 
             result2 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-amount, price=ws.recent_trades()[0]['price'] + offsetShort, execInst='ParticipateDoNotInitiate').result()
             while (True):
@@ -64,6 +69,11 @@ while(True): #work till ban :(
                     offsetShort += 0.5
                     result2 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-amount, price=ws.recent_trades()[0]['price'] + offsetShort, execInst='ParticipateDoNotInitiate').result()
                     print('SHORT retry')
+                    if (switchCounter > 5):
+                        deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
+                        switchCounter = 0
+                    else:
+                        switchCounter += 1
 
             offsetClose = 0
 
@@ -98,7 +108,7 @@ while(True): #work till ban :(
 
                                         result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] + offsetClose, execInst='ParticipateDoNotInitiate').result()
 
-                                        while (True):
+                                        while (True):  #price goes far away :(
                                             if (result3[0]['ordStatus'] == 'New'):
                                                 print('close position set again')
                                                 time.sleep(5)
@@ -111,13 +121,13 @@ while(True): #work till ban :(
                                     else:
                                         print('order set still viable')
                                         time.sleep(3)
-                                        if (switchCounter > 5):
+                                        if (switchCounter > 3):
                                             deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
                                             switchCounter = 0
                                         else:
                                             switchCounter += 1
 
-                                else:
+                                else: #finito
                                     print('position closed')
                                     r = client.Order.Order_cancelAll(symbol=symbol).result()
                                     print('all orders cancelled, new loop started')
@@ -157,7 +167,7 @@ while(True): #work till ban :(
 
                                         result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] - offsetClose, execInst='ParticipateDoNotInitiate').result()
 
-                                        while (True):  #
+                                        while (True):  #price goes far away :(
                                             if (result3[0]['ordStatus'] == 'New'):
                                                 print('close position set again')
                                                 time.sleep(5)
@@ -191,7 +201,7 @@ while(True): #work till ban :(
                             print('retry close')
                     break
 
-                elif (position['openOrderSellQty'] == 0 and position['openOrderBuyQty'] == 0 and position['currentQty'] == 0):  # sam c se oba orderja naenkt zafilata CELA
+                elif (position['openOrderSellQty'] == 0 and position['openOrderBuyQty'] == 0):  # sam c se oba orderja naenkt zafilata CELA
                     r = client.Order.Order_cancelAll(symbol=symbol).result()
                     deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
                     print('all filled too fast :)')
@@ -200,7 +210,7 @@ while(True): #work till ban :(
                 else:
                     time.sleep(2)
                     print('wait 2 secs, orders not filled yet')
-                    if (switchCounter > 7):
+                    if (switchCounter > 5):
                         deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
                         switchCounter = 0
                     else:
@@ -208,6 +218,7 @@ while(True): #work till ban :(
 
         else:
             print('funding incoming')
+            deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
             time.sleep(300)
 
     else: # to j d ne trajda c je prevelk VOLUME(pump/dump)
