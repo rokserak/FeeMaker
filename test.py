@@ -3,10 +3,10 @@ from bitmex_websocket import BitMEXWebsocket
 from datetime import datetime
 import dateutil.parser
 
-ws = BitMEXWebsocket(endpoint="wss://testnet.bitmex.com/realtime", symbol="ADAU18", api_key="oTBcvuJzFbqkuhHprfJlngUx", api_secret="nDsBbd5A12peVIqjgmiT46ealYn0aCcw6ziiOTHI8cLpftXs")
+#ws = BitMEXWebsocket(endpoint="wss://testnet.bitmex.com/realtime", symbol="ADAU18", api_key="oTBcvuJzFbqkuhHprfJlngUx", api_secret="nDsBbd5A12peVIqjgmiT46ealYn0aCcw6ziiOTHI8cLpftXs")
 
 
-client = bitmex.bitmex(test=True, api_key="QvaIe_JS9125RjXvG4UutfKt", api_secret="YrpvIbPahQK8euaBAZUR9JKqUGhQ6x_1FldDktFhdBN5amiy")
+#client = bitmex.bitmex(test=True, api_key="QvaIe_JS9125RjXvG4UutfKt", api_secret="YrpvIbPahQK8euaBAZUR9JKqUGhQ6x_1FldDktFhdBN5amiy")
 
 #result3 = client.Order.Order_new(symbol='XRPU18', ordType='StopLimit', orderQty=-10000, price=0.00004151, stopPx=0.00004153).result()
 #print(result3)
@@ -114,7 +114,7 @@ break
 
 #print(datetime.strptime(ws.get_instrument()['fundingTimestamp'][11:18], '%H:%M:%S'))
 
-print(datetime.now().time())
+#print(datetime.now().time())
 
 #p#rint(ws.get_instrument()['volume']) #nvm kuk cajta reku bi 1h
 #print(ws.get_instrument()['volume24h']) #obvios
@@ -127,15 +127,15 @@ print(datetime.now().time())
 #print(ws.get_instrument()['askPrice'])
 
 
-d = dateutil.parser.parse(ws.get_instrument()['fundingTimestamp']) # to use
-d = d.replace(tzinfo=None)
-razlika = d - datetime.utcnow()
-print(razlika.seconds / 60)
+#d = dateutil.parser.parse(ws.get_instrument()['fundingTimestamp']) # to use
+#d = d.replace(tzinfo=None)
+#razlika = d - datetime.utcnow()
+#print(razlika.seconds / 60)
 
-if(razlika.seconds / 60 > 5):
-    print(True)
-else:
-    print(False)
+#if(razlika.seconds / 60 > 5):
+    #print(True)
+#else:
+    #print(False)
 
 
 
@@ -149,4 +149,14 @@ else:
 
 #dodaj to d prever za cajt d ne trajda ku se funding bliza
 #dodaj to de prever c j pump al pa dumb biu pa nej ne trajda
+
+
+while(True):
+    try:
+        n = input("Please enter an integer: ")
+        n = int(n)
+        break
+    except ValueError:
+        print("No valid integer! Please try again ...")
+print("Great, you successfully entered an integer!")
 
