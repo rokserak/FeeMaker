@@ -126,6 +126,10 @@ while(True): #work till ban :(
                                                         switchCounter = 0
                                                     else:
                                                         switchCounter += 1
+
+                                                    if(offsetClose > 100):
+                                                        print("offset is weird - reset")
+                                                        offsetClose = 0
                                         else:
                                             print('order set still viable')
                                             time.sleep(3)
@@ -195,6 +199,10 @@ while(True): #work till ban :(
                                                         switchCounter = 0
                                                     else:
                                                         switchCounter += 1
+
+                                                    if(offsetClose > 100):
+                                                        print("offset is weird - reset")
+                                                        offsetClose = 0
                                         else:
                                             print('order set still viable')
                                             time.sleep(3)
