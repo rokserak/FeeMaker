@@ -108,6 +108,11 @@ while(True): #work till ban :(
                                                 if (result3[0]['ordStatus'] == 'New'):
                                                     print('close position set again')
                                                     time.sleep(5)
+                                                    if (switchCounter > 3):
+                                                        deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
+                                                        switchCounter = 0
+                                                    else:
+                                                        switchCounter += 1
                                                     break
                                                 else:
                                                     time.sleep(2)
@@ -132,6 +137,11 @@ while(True): #work till ban :(
                                                             if (result3[0]['ordStatus'] == 'New'):
                                                                 print('close position set again on other side')
                                                                 time.sleep(5)
+                                                                if (switchCounter > 3):
+                                                                    deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
+                                                                    switchCounter = 0
+                                                                else:
+                                                                    switchCounter += 1
                                                                 break
                                                             else:
                                                                 time.sleep(2)
@@ -202,6 +212,11 @@ while(True): #work till ban :(
                                                 if (result3[0]['ordStatus'] == 'New'):
                                                     print('close position set again')
                                                     time.sleep(5)
+                                                    if (switchCounter > 3):
+                                                        deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
+                                                        switchCounter = 0
+                                                    else:
+                                                        switchCounter += 1
                                                     break
                                                 else:
                                                     time.sleep(2)
@@ -226,6 +241,11 @@ while(True): #work till ban :(
                                                             if (result3[0]['ordStatus'] == 'New'):
                                                                 print('close position set again on other side')
                                                                 time.sleep(5)
+                                                                if (switchCounter > 3):
+                                                                    deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()
+                                                                    switchCounter = 0
+                                                                else:
+                                                                    switchCounter += 1
                                                                 break
                                                             else:
                                                                 time.sleep(2)
