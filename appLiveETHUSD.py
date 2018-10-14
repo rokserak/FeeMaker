@@ -8,8 +8,8 @@ import dateutil.parser
 import sys
 
 client = bitmex.bitmex(test=False, api_key="", api_secret="")
-ws = BitMEXWebsocket(endpoint="wss://www.bitmex.com/realtime", symbol="XBTUSD", api_key="", api_secret="")
-symbol = 'XBTUSD'
+ws = BitMEXWebsocket(endpoint="wss://www.bitmex.com/realtime", symbol="ETHUSD", api_key="", api_secret="")
+symbol = 'ETHUSD'
 
 lastRenew = datetime.now()
 
@@ -29,7 +29,7 @@ while(True): #work till ban :(
 
         if(kukCajta.seconds / 3600 > 1): #renew ws connection cause live feed lagging, renew every hour
             ws.exit()
-            ws = BitMEXWebsocket(endpoint="wss://www.bitmex.com/realtime", symbol="XBTUSD", api_key="", api_secret="")
+            ws = BitMEXWebsocket(endpoint="wss://www.bitmex.com/realtime", symbol="ETHUSD", api_key="", api_secret="")
             lastRenew = datetime.now()
 
         if(ws.get_instrument()['volume'] < ws.get_instrument()['volume24h'] / 24): #avoid pumps/dumps
@@ -38,7 +38,7 @@ while(True): #work till ban :(
             d = d.replace(tzinfo=None)
             razlika = d - datetime.utcnow()
             print(razlika.seconds / 60)
-            if(razlika.seconds / 60 > 5): #check funding closing
+            if(razlika.seconds / 60 > 10): #check funding closing
 
                 result1 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=amount, price=ws.recent_trades()[0]['price'] - offsetLong, execInst='ParticipateDoNotInitiate').result()
                 while (True):  # check if order succesful else try again
@@ -47,7 +47,7 @@ while(True): #work till ban :(
                         break
                     else:
                         time.sleep(2)
-                        offsetLong += 0.5
+                        offsetLong += 0.05
                         result1 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=amount, price=ws.recent_trades()[0]['price'] - offsetLong, execInst='ParticipateDoNotInitiate').result()
                         print('LONG retry')
                         if (switchCounter > 5):
@@ -63,7 +63,7 @@ while(True): #work till ban :(
                         break
                     else:
                         time.sleep(2)
-                        offsetShort += 0.5
+                        offsetShort += 0.05
                         result2 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-amount, price=ws.recent_trades()[0]['price'] + offsetShort, execInst='ParticipateDoNotInitiate').result()
                         print('SHORT retry')
                         if (switchCounter > 5):
@@ -98,7 +98,7 @@ while(True): #work till ban :(
                                     if (position['currentQty'] != 0):
                                         offsetClose = 0
 
-                                        if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderSellQty'] != 0):
+                                        if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 0.3 or position['openOrderSellQty'] != 0):
 
                                             r = client.Order.Order_cancelAll(symbol=symbol).result()
 
@@ -111,7 +111,7 @@ while(True): #work till ban :(
                                                     break
                                                 else:
                                                     time.sleep(2)
-                                                    offsetClose += 0.5
+                                                    offsetClose += 0.05
                                                     result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] + offsetClose, execInst='ParticipateDoNotInitiate').result()
                                                     print('retry close')
                                                     if (switchCounter > 5):
@@ -120,7 +120,7 @@ while(True): #work till ban :(
                                                     else:
                                                         switchCounter += 1
 
-                                                    if(offsetClose > 100): #price went in the wrong way
+                                                    if(offsetClose > 50): #price went in the wrong way
                                                         print("offset is weird - reset")
                                                         offsetClose = 0
 
@@ -135,7 +135,7 @@ while(True): #work till ban :(
                                                                 break
                                                             else:
                                                                 time.sleep(2)
-                                                                offsetClose += 0.5
+                                                                offsetClose += 0.05
                                                                 result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] - offsetClose, execInst='ParticipateDoNotInitiate').result()
                                                                 print('retry close')
                                                                 if (switchCounter > 5):
@@ -165,7 +165,7 @@ while(True): #work till ban :(
 
                             else:
                                 time.sleep(2)
-                                offsetClose += 0.5
+                                offsetClose += 0.05
                                 result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] + offsetClose, execInst='ParticipateDoNotInitiate').result()
                                 print('retry close')
                                 if (switchCounter > 5):
@@ -192,7 +192,7 @@ while(True): #work till ban :(
                                     if (position['currentQty'] != 0):
                                         offsetClose = 0
 
-                                        if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderBuyQty'] == 0):
+                                        if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 0.3 or position['openOrderBuyQty'] == 0):
 
                                             r = client.Order.Order_cancelAll(symbol=symbol).result()
 
@@ -205,7 +205,7 @@ while(True): #work till ban :(
                                                     break
                                                 else:
                                                     time.sleep(2)
-                                                    offsetClose += 0.5
+                                                    offsetClose += 0.05
                                                     result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] - offsetClose, execInst='ParticipateDoNotInitiate').result()
                                                     print('retry close')
                                                     if (switchCounter > 5):
@@ -214,7 +214,7 @@ while(True): #work till ban :(
                                                     else:
                                                         switchCounter += 1
 
-                                                    if(offsetClose > 100):
+                                                    if(offsetClose > 50): #shit went bad you are fucked
                                                         print("offset is weird - reset")
                                                         offsetClose = 0
 
@@ -229,7 +229,7 @@ while(True): #work till ban :(
                                                                 break
                                                             else:
                                                                 time.sleep(2)
-                                                                offsetClose += 0.5
+                                                                offsetClose += 0.05
                                                                 result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] + offsetClose, execInst='ParticipateDoNotInitiate').result()
                                                                 print('retry close')
                                                                 if (switchCounter > 5):
@@ -258,7 +258,7 @@ while(True): #work till ban :(
 
                             else:
                                 time.sleep(2)
-                                offsetClose += 0.5
+                                offsetClose += 0.05
                                 result3 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=-position['currentQty'], price=ws.recent_trades()[0]['price'] - offsetClose, execInst='ParticipateDoNotInitiate').result()
                                 print('retry close')
                                 if (switchCounter > 5):
@@ -298,4 +298,4 @@ while(True): #work till ban :(
         print(sys.exc_info())
         time.sleep(5)
         client = bitmex.bitmex(test=False, api_key="", api_secret="")
-        ws = BitMEXWebsocket(endpoint="wss://www.bitmex.com/realtime", symbol="XBTUSD", api_key="", api_secret="")
+        ws = BitMEXWebsocket(endpoint="wss://www.bitmex.com/realtime", symbol="ETHUSD", api_key="", api_secret="")
