@@ -98,7 +98,7 @@ while(True): #work till ban :(
                                     if (position['currentQty'] != 0):
                                         offsetClose = 0
 
-                                        if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 0.3 or position['openOrderSellQty'] != 0):
+                                        if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 0.3 or position['openOrderSellQty'] == 0):
 
                                             r = client.Order.Order_cancelAll(symbol=symbol).result()
 
