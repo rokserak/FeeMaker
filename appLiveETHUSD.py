@@ -422,7 +422,6 @@ while(True): #work till ban :(
                         switchCounter = 0
                     else:
                         switchCounter += 1
-            break
 
 
         elif(position['currentQty'] < 0): #ce kak SHORT position odprt pol ga najprej zapri
@@ -525,7 +524,6 @@ while(True): #work till ban :(
                         switchCounter = 0
                     else:
                         switchCounter += 1
-            break
         
 
     except:
