@@ -15,7 +15,7 @@ lastRenew = datetime.now()
 
 while(True): #work till ban :(
 
-    amount = 10000 #set whatever you want
+    amount = 1000 #set whatever you want
 
     try:
 
@@ -38,7 +38,7 @@ while(True): #work till ban :(
             d = d.replace(tzinfo=None)
             razlika = d - datetime.utcnow()
             print(razlika.seconds / 60)
-            if(razlika.seconds / 60 > 5): #check funding closing
+            if(razlika.seconds / 60 > 10): #check funding closing
 
                 result1 = client.Order.Order_new(symbol=symbol, ordType='Limit', orderQty=amount, price=ws.recent_trades()[0]['price'] - offsetLong, execInst='ParticipateDoNotInitiate').result()
                 while (True):  # check if order succesful else try again
@@ -98,7 +98,7 @@ while(True): #work till ban :(
                                     if (position['currentQty'] != 0):
                                         offsetClose = 0
 
-                                        if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderSellQty'] != 0):
+                                        if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 2 or position['openOrderSellQty'] != 0):
 
                                             r = client.Order.Order_cancelAll(symbol=symbol).result()
 
