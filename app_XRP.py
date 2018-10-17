@@ -36,7 +36,7 @@ while (True):  # work till ban :(
 
             if (kukCajta.seconds / 3600 > 1):  # renew ws connection cause live feed lagging, renew every hour
                 ws.exit()
-                ws = BitMEXWebsocket(endpoint="wss://www.bitmex.com/realtime", symbol="ETHUSD", api_key="", api_secret="")
+                ws = BitMEXWebsocket(endpoint="wss://www.bitmex.com/realtime", symbol="XRPZ18", api_key="", api_secret="")
                 lastRenew = datetime.now()
 
             if (ws.get_instrument()['volume'] < ws.get_instrument()['volume24h'] / 24):  # avoid pumps/dumps
@@ -531,4 +531,4 @@ while (True):  # work till ban :(
         print(sys.exc_info())
         time.sleep(5)
         client = bitmex.bitmex(test=False, api_key="", api_secret="")
-        ws = BitMEXWebsocket(endpoint="wss://www.bitmex.com/realtime", symbol="ETHUSD", api_key="", api_secret="")
+        ws = BitMEXWebsocket(endpoint="wss://www.bitmex.com/realtime", symbol="XRPZ18", api_key="", api_secret="")
