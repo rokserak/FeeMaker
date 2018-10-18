@@ -7,7 +7,7 @@ import sys
 
 client = bitmex.bitmex(test=False, api_key="", api_secret="")
 ws = BitMEXWebsocket(endpoint="wss://www.bitmex.com/realtime", symbol="XBTUSD", api_key="", api_secret="")
-symbol = 'ETHUSD'
+symbol = 'XBTUSD'
 
 lastRenew = datetime.now()
 
