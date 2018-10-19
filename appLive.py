@@ -6,7 +6,7 @@ import dateutil.parser
 import sys
 
 client = bitmex.bitmex(test=False, api_key="", api_secret="")
-ws = BitMEXWebsocket(endpoint="wss://www.bitmex.com/realtime", symbol="XBTUSD", api_key="", api_secret="")
+ws = BitMEXWebsocket(endpoint="https://www.bitmex.com/api/v1", symbol="XBTUSD", api_key="", api_secret="")
 symbol = 'XBTUSD'
 
 lastRenew = datetime.now()
@@ -36,7 +36,7 @@ while (True):  # work till ban :(
 
             if (kukCajta.seconds / 3600 > 1):  # renew ws connection cause live feed lagging, renew every hour
                 ws.exit()
-                ws = BitMEXWebsocket(endpoint="wss://www.bitmex.com/realtime", symbol="XBTUSD", api_key="", api_secret="")
+                ws = BitMEXWebsocket(endpoint="https://www.bitmex.com/api/v1", symbol="XBTUSD", api_key="", api_secret="")
                 lastRenew = datetime.now()
 
             if (ws.get_instrument()['volume'] < ws.get_instrument()['volume24h'] / 24):  # avoid pumps/dumps
@@ -105,7 +105,7 @@ while (True):  # work till ban :(
                                         if (position['currentQty'] != 0):
                                             offsetClose = 0
 
-                                            if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 2 or position['openOrderSellQty'] == 0):
+                                            if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderSellQty'] == 0):
 
                                                 r = client.Order.Order_cancelAll(symbol=symbol).result()
 
@@ -209,7 +209,7 @@ while (True):  # work till ban :(
                                         if (position['currentQty'] != 0):
                                             offsetClose = 0
 
-                                            if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 2 or position['openOrderBuyQty'] == 0):
+                                            if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderBuyQty'] == 0):
 
                                                 r = client.Order.Order_cancelAll(symbol=symbol).result()
 
@@ -337,7 +337,7 @@ while (True):  # work till ban :(
                         if (position['currentQty'] != 0):
                             offsetClose = 0
 
-                            if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 2 or position['openOrderSellQty'] == 0):
+                            if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderSellQty'] == 0):
 
                                 r = client.Order.Order_cancelAll(symbol=symbol).result()
 
@@ -440,7 +440,7 @@ while (True):  # work till ban :(
                         if (position['currentQty'] != 0):
                             offsetClose = 0
 
-                            if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 2 or position['openOrderBuyQty'] == 0):
+                            if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderBuyQty'] == 0):
 
                                 r = client.Order.Order_cancelAll(symbol=symbol).result()
 
@@ -531,4 +531,4 @@ while (True):  # work till ban :(
         print(sys.exc_info())
         time.sleep(5)
         client = bitmex.bitmex(test=False, api_key="", api_secret="")
-        ws = BitMEXWebsocket(endpoint="wss://www.bitmex.com/realtime", symbol="XBTUSD", api_key="", api_secret="")
+        ws = BitMEXWebsocket(endpoint="https://www.bitmex.com/api/v1", symbol="XBTUSD", api_key="", api_secret="")
