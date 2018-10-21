@@ -14,6 +14,9 @@ lastRenew = datetime.now()
 while (True):  # work till ban :(
 
     amount = 1000  # set whatever you want
+    switchCounter = 0
+    offsetClose = 0
+    lastPosSet = datetime.now()
 
     try:
 
@@ -104,8 +107,11 @@ while (True):  # work till ban :(
                                                 break
                                         if (position['currentQty'] != 0):
                                             offsetClose = 0
+                                            posSetTime = datetime.now() - lastPosSet
 
-                                            if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderSellQty'] == 0):
+                                            if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderSellQty'] == 0 or posSetTime.seconds / 60 > 15):
+                                                
+                                                lastPosSet = datetime.now()
 
                                                 r = client.Order.Order_cancelAll(symbol=symbol).result()
 
@@ -208,8 +214,11 @@ while (True):  # work till ban :(
                                                 break
                                         if (position['currentQty'] != 0):
                                             offsetClose = 0
+                                            posSetTime = datetime.now() - lastPosSet
 
-                                            if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderBuyQty'] == 0):
+                                            if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderBuyQty'] == 0 or posSetTime.seconds / 60 > 15):
+
+                                                lastPosSet = datetime.now()
 
                                                 r = client.Order.Order_cancelAll(symbol=symbol).result()
 
@@ -336,8 +345,11 @@ while (True):  # work till ban :(
                                 break
                         if (position['currentQty'] != 0):
                             offsetClose = 0
+                            posSetTime = datetime.now() - lastPosSet
 
-                            if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderSellQty'] == 0):
+                            if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderSellQty'] == 0 or posSetTime.seconds / 60 > 15):
+
+                                lastPosSet = datetime.now()
 
                                 r = client.Order.Order_cancelAll(symbol=symbol).result()
 
@@ -439,8 +451,11 @@ while (True):  # work till ban :(
                                 break
                         if (position['currentQty'] != 0):
                             offsetClose = 0
+                            posSetTime = datetime.now() - lastPosSet
 
-                            if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderBuyQty'] == 0):
+                            if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderBuyQty'] == 0 or posSetTime.seconds / 60 > 15):
+
+                                lastPosSet = datetime.now()
 
                                 r = client.Order.Order_cancelAll(symbol=symbol).result()
 
