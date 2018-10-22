@@ -35,13 +35,6 @@ while (True):  # work till ban :(
             deadManSwitch = client.Order.Order_cancelAllAfter(timeout=60000.0).result()  # dead man switch start
             switchCounter = 0
 
-            kukCajta = datetime.now() - lastRenew
-
-            if (kukCajta.seconds / 3600 > 1):  # renew ws connection cause live feed lagging, renew every hour
-                ws.exit()
-                ws = BitMEXWebsocket(endpoint="https://www.bitmex.com/api/v1", symbol="XBTUSD", api_key="", api_secret="")
-                lastRenew = datetime.now()
-
             if (ws.get_instrument()['volume'] < ws.get_instrument()['volume24h'] / 24):  # avoid pumps/dumps
 
                 d = dateutil.parser.parse(ws.get_instrument()['fundingTimestamp'])
@@ -108,6 +101,15 @@ while (True):  # work till ban :(
                                         if (position['currentQty'] != 0):
                                             offsetClose = 0
                                             posSetTime = datetime.now() - lastPosSet
+
+
+                                            kukCajta = datetime.now() - lastRenew
+
+                                            if (kukCajta.seconds / 60 > 15):  # renew ws connection cause live feed lagging, renew every hour
+                                                ws.exit()
+                                                ws = BitMEXWebsocket(endpoint="https://www.bitmex.com/api/v1", symbol="XBTUSD", api_key="", api_secret="")
+                                                lastRenew = datetime.now()
+
 
                                             if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderSellQty'] == 0 or posSetTime.seconds / 60 > 15):
                                                 
@@ -215,6 +217,14 @@ while (True):  # work till ban :(
                                         if (position['currentQty'] != 0):
                                             offsetClose = 0
                                             posSetTime = datetime.now() - lastPosSet
+
+                                            kukCajta = datetime.now() - lastRenew
+
+                                            if (kukCajta.seconds / 60 > 15):  # renew ws connection cause live feed lagging, renew every hour
+                                                ws.exit()
+                                                ws = BitMEXWebsocket(endpoint="https://www.bitmex.com/api/v1", symbol="XBTUSD", api_key="", api_secret="")
+                                                lastRenew = datetime.now()
+
 
                                             if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderBuyQty'] == 0 or posSetTime.seconds / 60 > 15):
 
@@ -347,6 +357,13 @@ while (True):  # work till ban :(
                             offsetClose = 0
                             posSetTime = datetime.now() - lastPosSet
 
+                            kukCajta = datetime.now() - lastRenew
+
+                            if (kukCajta.seconds / 60 > 15):  # renew ws connection cause live feed lagging, renew every hour
+                                ws.exit()
+                                ws = BitMEXWebsocket(endpoint="https://www.bitmex.com/api/v1", symbol="XBTUSD", api_key="", api_secret="")
+                                lastRenew = datetime.now()
+
                             if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderSellQty'] == 0 or posSetTime.seconds / 60 > 15):
 
                                 lastPosSet = datetime.now()
@@ -452,6 +469,13 @@ while (True):  # work till ban :(
                         if (position['currentQty'] != 0):
                             offsetClose = 0
                             posSetTime = datetime.now() - lastPosSet
+
+                            kukCajta = datetime.now() - lastRenew
+
+                            if (kukCajta.seconds / 60 > 15):  # renew ws connection cause live feed lagging, renew every hour
+                                ws.exit()
+                                ws = BitMEXWebsocket(endpoint="https://www.bitmex.com/api/v1", symbol="XBTUSD", api_key="", api_secret="")
+                                lastRenew = datetime.now()
 
                             if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 1 or position['openOrderBuyQty'] == 0 or posSetTime.seconds / 60 > 15):
 
