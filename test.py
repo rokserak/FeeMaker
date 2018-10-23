@@ -1,7 +1,5 @@
-import bitmex
-from bitmex_websocket import BitMEXWebsocket
-from datetime import datetime
-import dateutil.parser
+
+import json
 
 #ws = BitMEXWebsocket(endpoint="wss://testnet.bitmex.com/realtime", symbol="ADAU18", api_key="oTBcvuJzFbqkuhHprfJlngUx", api_secret="nDsBbd5A12peVIqjgmiT46ealYn0aCcw6ziiOTHI8cLpftXs")
 
@@ -151,12 +149,10 @@ break
 #dodaj to de prever c j pump al pa dumb biu pa nej ne trajda
 
 
-while(True):
-    try:
-        n = input("Please enter an integer: ")
-        n = int(n)
-        break
-    except ValueError:
-        print("No valid integer! Please try again ...")
-print("Great, you successfully entered an integer!")
 
+
+
+
+with open("api_keys.json", "r") as read_file:
+    apiKljuci = json.load(read_file)
+    print(apiKljuci['http']['key'])

@@ -1,0 +1,11 @@
+{
+    "http": {
+        "key": "",
+        "secret": ""
+    },
+
+    "websocket": {
+        "key": "",
+        "secret": ""
+    }
+}
