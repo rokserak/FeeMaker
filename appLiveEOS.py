@@ -105,6 +105,11 @@ while (True):  # work till ban :(
                                             ws.exit()
                                             ws = BitMEXWebsocket(endpoint="https://www.bitmex.com/api/v1", symbol=symbol, api_key=apiKljuci['websocket']['key'], api_secret=apiKljuci['websocket']['secret'])
                                             lastRenew = datetime.now()
+
+                                        if (ws.get_instrument()['volume'] > ws.get_instrument()['volume24h'] / 24):
+                                            result3 = client.Order.Order_closePosition(symbol=symbol).result()
+                                            break
+
                                         if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 0.0000002 or position['openOrderSellQty'] == 0):
 
                                             lastPosSet = datetime.now()
@@ -201,6 +206,11 @@ while (True):  # work till ban :(
                                             ws.exit()
                                             ws = BitMEXWebsocket(endpoint="https://www.bitmex.com/api/v1", symbol=symbol, api_key=apiKljuci['websocket']['key'], api_secret=apiKljuci['websocket']['secret'])
                                             lastRenew = datetime.now()
+
+                                        if (ws.get_instrument()['volume'] > ws.get_instrument()['volume24h'] / 24):
+                                            result3 = client.Order.Order_closePosition(symbol=symbol).result()
+                                            break
+
                                         if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 0.0000002 or position['openOrderBuyQty'] == 0):
                                             lastPosSet = datetime.now()
                                             r = client.Order.Order_cancelAll(symbol=symbol).result()
@@ -324,6 +334,10 @@ while (True):  # work till ban :(
                                 ws = BitMEXWebsocket(endpoint="https://www.bitmex.com/api/v1", symbol=symbol, api_key=apiKljuci['websocket']['key'], api_secret=apiKljuci['websocket']['secret'])
                                 lastRenew = datetime.now()
 
+                            if (ws.get_instrument()['volume'] > ws.get_instrument()['volume24h'] / 24):
+                                result3 = client.Order.Order_closePosition(symbol=symbol).result()
+                                break
+
                             if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 0.0000002 or position['openOrderSellQty'] == 0):
 
                                 lastPosSet = datetime.now()
@@ -436,6 +450,10 @@ while (True):  # work till ban :(
                                 ws.exit()
                                 ws = BitMEXWebsocket(endpoint="https://www.bitmex.com/api/v1", symbol=symbol, api_key=apiKljuci['websocket']['key'], api_secret=apiKljuci['websocket']['secret'])
                                 lastRenew = datetime.now()
+
+                            if (ws.get_instrument()['volume'] > ws.get_instrument()['volume24h'] / 24):
+                                result3 = client.Order.Order_closePosition(symbol=symbol).result()
+                                break
 
                             if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 0.0000002 or position['openOrderBuyQty'] == 0):
 
