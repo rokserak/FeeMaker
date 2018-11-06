@@ -113,7 +113,7 @@ while (True):  # work till ban :(
                                             lastPosSet = datetime.now()
                                             r = client.Order.Order_cancelAll(symbol=symbol).result()
 
-                                            if (ws.get_instrument()['volume'] > ws.get_instrument()['volume24h'] / 24 * 1.5):
+                                            if (ws.get_instrument()['volume'] > ws.get_instrument()['volume24h'] / 24 * 2):
                                                 result3 = client.Order.Order_closePosition(symbol=symbol).result()
                                                 print("market close :(")
                                                 break
@@ -217,7 +217,7 @@ while (True):  # work till ban :(
                                             lastPosSet = datetime.now()
                                             r = client.Order.Order_cancelAll(symbol=symbol).result()
 
-                                            if (ws.get_instrument()['volume'] > ws.get_instrument()['volume24h'] / 24 * 1.5):
+                                            if (ws.get_instrument()['volume'] > ws.get_instrument()['volume24h'] / 24 * 2):
                                                 result3 = client.Order.Order_closePosition(symbol=symbol).result()
                                                 print("market close :(")
                                                 break
@@ -350,7 +350,7 @@ while (True):  # work till ban :(
 
                                 r = client.Order.Order_cancelAll(symbol=symbol).result()
 
-                                if (ws.get_instrument()['volume'] > ws.get_instrument()['volume24h'] / 24 * 1.5):
+                                if (ws.get_instrument()['volume'] > ws.get_instrument()['volume24h'] / 24 * 2):
                                     result3 = client.Order.Order_closePosition(symbol=symbol).result()
                                     print("market close :(")
                                     break
@@ -470,7 +470,7 @@ while (True):  # work till ban :(
 
                                 r = client.Order.Order_cancelAll(symbol=symbol).result()
 
-                                if (ws.get_instrument()['volume'] > ws.get_instrument()['volume24h'] / 24 * 1.5):
+                                if (ws.get_instrument()['volume'] > ws.get_instrument()['volume24h'] / 24 * 2):
                                     result3 = client.Order.Order_closePosition(symbol=symbol).result()
                                     print("market close :(")
                                     break
