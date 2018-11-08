@@ -125,6 +125,11 @@ while (True):  # work till ban :(
 
                                             if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 2 or position['openOrderSellQty'] == 0 or posSetTime.seconds / 60 > 15):
                                                 
+                                                if (ws.get_instrument()['volume'] > ws.get_instrument()['volume24h'] / 24 * 2):
+                                                    result3 = client.Order.Order_closePosition(symbol=symbol).result()
+                                                    print("market close :(")
+                                                    break
+
                                                 lastPosSet = datetime.now()
 
                                                 r = client.Order.Order_cancelAll(symbol=symbol).result()
@@ -239,6 +244,11 @@ while (True):  # work till ban :(
 
 
                                             if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 2 or position['openOrderBuyQty'] == 0 or posSetTime.seconds / 60 > 15):
+
+                                                if (ws.get_instrument()['volume'] > ws.get_instrument()['volume24h'] / 24 * 2):
+                                                    result3 = client.Order.Order_closePosition(symbol=symbol).result()
+                                                    print("market close :(")
+                                                    break
 
                                                 lastPosSet = datetime.now()
 
@@ -378,6 +388,11 @@ while (True):  # work till ban :(
 
                             if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 2 or position['openOrderSellQty'] == 0 or posSetTime.seconds / 60 > 15):
 
+                                if (ws.get_instrument()['volume'] > ws.get_instrument()['volume24h'] / 24 * 2):
+                                    result3 = client.Order.Order_closePosition(symbol=symbol).result()
+                                    print("market close :(")
+                                    break
+
                                 lastPosSet = datetime.now()
 
                                 r = client.Order.Order_cancelAll(symbol=symbol).result()
@@ -490,6 +505,11 @@ while (True):  # work till ban :(
                                 lastRenew = datetime.now()
 
                             if (abs(ws.recent_trades()[0]['price'] - result3[0]['price']) > 2 or position['openOrderBuyQty'] == 0 or posSetTime.seconds / 60 > 15):
+
+                                if (ws.get_instrument()['volume'] > ws.get_instrument()['volume24h'] / 24 * 2):
+                                    result3 = client.Order.Order_closePosition(symbol=symbol).result()
+                                    print("market close :(")
+                                    break
 
                                 lastPosSet = datetime.now()
 
