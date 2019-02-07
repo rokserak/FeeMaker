@@ -4,7 +4,7 @@ After=multi-user.target
 
 [Service]
 Type=idle
-ExecStart=/usr/bin/python /home/pi/Documents/FeeMaker/appTestnet.py > /home/pi/Documents/FeeMaker/appTestnet.log 2>&1
+ExecStart=/usr/bin/python3 /home/pi/Documents/FeeMaker/appTestnet.py > /home/pi/Documents/FeeMaker/appTestnet.log 2>&1
 
 [Install]
 WantedBy=multi-user.target
