@@ -4,6 +4,7 @@ After=multi-user.target
 
 [Service]
 Type=idle
+User=user
 ExecStart=/usr/bin/python3 /home/pi/Documents/FeeMaker/appTestnet.py > /home/pi/Documents/FeeMaker/appTestnet.log 2>&1
 
 [Install]

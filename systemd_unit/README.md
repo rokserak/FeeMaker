@@ -7,6 +7,7 @@ sudo chmod 644 /lib/systemd/system/bitmex_app.service
 
 
 sudo systemctl daemon-reload
+
 sudo systemctl enable bitmex_app.service
 
 sudo systemctl status bitmex_app.service
