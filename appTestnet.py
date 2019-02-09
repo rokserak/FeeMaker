@@ -48,7 +48,8 @@ while (True):  # work till ban :(
                                      api_key=apiKljuci['websocket']['key'], api_secret=apiKljuci['websocket']['secret'])
                 lastRenew = datetime.now()
 
-            if (ws.get_instrument()['volume'] < ws.get_instrument()['volume24h'] / 24):  # avoid pumps/dumps
+            if (ws.get_instrument()['volume'] < ws.get_instrument()['volume24h'] / 24 / 0.7):  # avoid pumps/dumps
+                # only trade when volume is 2/3 of average volume
 
                 d = dateutil.parser.parse(ws.get_instrument()['fundingTimestamp'])
                 d = d.replace(tzinfo=None)
