@@ -6,7 +6,7 @@ import dateutil.parser
 import sys
 import json
 
-with open("api_keys.json", "r") as read_file:
+with open("/home/pi/Documents/FeeMaker/api_keys.json", "r") as read_file:
     apiKljuci = json.load(read_file)
 
 symbol = 'XBTUSD'
