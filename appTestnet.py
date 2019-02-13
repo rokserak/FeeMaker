@@ -49,7 +49,7 @@ while (True):  # work till ban :(
                 lastRenew = datetime.now()
 
             if (ws.get_instrument()['volume'] < ws.get_instrument()['volume24h'] / 24 / 0.5):  # avoid pumps/dumps
-                # only trade when volume is 2/3 of average volume
+                # only trade when volume is 1/2 of average volume
 
                 d = dateutil.parser.parse(ws.get_instrument()['fundingTimestamp'])
                 d = d.replace(tzinfo=None)
@@ -146,6 +146,7 @@ while (True):  # work till ban :(
                                                     'volume24h'] / 24 * 2):
                                                     result3 = client.Order.Order_closePosition(symbol=symbol).result()
                                                     print("market close :(")
+                                                    time.sleep(60)
                                                     break
 
                                                 lastPosSet = datetime.now()
@@ -306,6 +307,7 @@ while (True):  # work till ban :(
                                                     'volume24h'] / 24 * 2):
                                                     result3 = client.Order.Order_closePosition(symbol=symbol).result()
                                                     print("market close :(")
+                                                    time.sleep(60)
                                                     break
 
                                                 lastPosSet = datetime.now()
@@ -487,6 +489,7 @@ while (True):  # work till ban :(
                                 if (ws.get_instrument()['volume'] > ws.get_instrument()['volume24h'] / 24 * 2):
                                     result3 = client.Order.Order_closePosition(symbol=symbol).result()
                                     print("market close :(")
+                                    time.sleep(60)
                                     break
 
                                 lastPosSet = datetime.now()
@@ -630,6 +633,7 @@ while (True):  # work till ban :(
                                 if (ws.get_instrument()['volume'] > ws.get_instrument()['volume24h'] / 24 * 2):
                                     result3 = client.Order.Order_closePosition(symbol=symbol).result()
                                     print("market close :(")
+                                    time.sleep(60)
                                     break
 
                                 lastPosSet = datetime.now()
